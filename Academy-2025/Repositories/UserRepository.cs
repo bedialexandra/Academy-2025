@@ -64,14 +64,12 @@ namespace Academy_2025.Repositories
             return false;
         }
 
-        public List<User> GetOlderEightteen(int age)
+        public List<User> GetOlderEightteen()
         {
             var users = _context.Users.ToList();
-            if (users!=null)
-            {
-                return _context.Users.Where(user => user.Age > age).ToList();
-            }
-            return null;
+           
+                return _context.Users.Where(user => user!=null && user.Age>18).ToList();
+           
         }
     }
 }
