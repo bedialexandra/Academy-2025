@@ -19,5 +19,6 @@ namespace Academy_2025.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Course> Courses { get; set; }
     }
 }
