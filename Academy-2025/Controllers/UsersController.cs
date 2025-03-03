@@ -36,12 +36,7 @@ namespace Academy_2025.Controllers
         [HttpGet("/age")]
         public IEnumerable<User> GetAge()
         {
-            /*var users = _repository.GetOlderEightteen();
-            if (users != null) 
-            { 
-                return users;
-            }
-            return null;*/
+            
             return _repository.GetOlderEightteen();
            
         }
