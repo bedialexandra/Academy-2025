@@ -1,5 +1,8 @@
 ﻿using Academy_2025.Data;
+using Academy_2025.DTOs;
 using Academy_2025.Repositories;
+using Academy_2025.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -12,11 +15,11 @@ namespace Academy_2025.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly UserRepository _repository;
+        private readonly IUserService _userService;
 
-        public UsersController()
+        public UsersController(IUserService userService)
         {
-            _repository = new UserRepository();
+            _userService = userService;
         }
         /*public UsersController()
         {
@@ -27,56 +30,62 @@ namespace Academy_2025.Controllers
             };
         }*/
         // GET: api/<UsersController>
+        [Authorize]
         [HttpGet]
-        public IEnumerable<User> Get()
+        public async Task<IEnumerable<UserDto>> GetAsync()
         {
-            return _repository.GetAll();
+            return await _userService.GetAllAsync();
         }
 
+        [Authorize]
         [HttpGet("/age")]
-        public IEnumerable<User> GetAge()
+        public async Task<IEnumerable<User>> GetAgeAsync()
         {
             
-            return _repository.GetOlderEightteen();
+            return await _userService.GetOlderEightteenAsync();
            
         }
-        
+
 
         // GET api/<UsersController>/5
+        [Authorize]
         [HttpGet("{id}")]
-        public ActionResult<User> Get(int id)
+        public async Task<ActionResult<UserDto>> GetAsync(int id)
         {
-            var user=_repository.GetById(id);
+            var user=await _userService.GetByIdAsync(id);
             return user==null?NotFound():user;
         }
 
         // POST api/<UsersController>
+        [AllowAnonymous]
         [HttpPost]
-        public ActionResult Post([FromBody] User data)
+        public async Task<ActionResult> PostAsync([FromBody] UserDto data)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _repository.Create(data);
+            await _userService.CreateAsync(data);
 
             return NoContent();
         }
 
         // PUT api/<UsersController>/5
+        [Authorize]
         [HttpPut("{id}")]
-        public ActionResult<User> Put(int id, [FromBody] User data)
+        public async Task<ActionResult<User>> PutAsync(int id, [FromBody] UserDto data)
         {
-            var user = _repository.Update(id,data);
-            return user == null ? NotFound() : user;
+            var user = await _userService.UpdateAsync(id,data);
+            return user == null ? NotFound() : NoContent();
         }
 
         // DELETE api/<UsersController>/5
+        [Authorize]
         [HttpDelete("{id}")]
-        public ActionResult<User> Delete(int id)
+        public async Task<ActionResult<User>> DeleteAsync(int id)
         {
-            var result = _repository.Delete(id);
+            var result = await _userService.DeleteAsync(id);
             return result ? NoContent() : NotFound();
         }
 

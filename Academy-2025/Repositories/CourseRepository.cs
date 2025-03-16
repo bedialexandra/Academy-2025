@@ -8,7 +8,7 @@ namespace Academy_2025.Repositories
 
         public CourseRepository()
         {
-            _context = new ApplicationDbContext();
+            //_context = new ApplicationDbContext();
 
 
         }

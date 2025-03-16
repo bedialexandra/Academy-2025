@@ -1,4 +1,11 @@
 
+using Academy_2025.Data;
+using Academy_2025.Options;
+using Academy_2025.Repositories;
+using Academy_2025.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+
 namespace Academy_2025
 {
     public class Program
@@ -14,6 +21,24 @@ namespace Academy_2025
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddDbContext<ApplicationDbContext>(opts => opts.UseSqlite(builder.Configuration.GetConnectionString("ApplicationDbContext")));
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+
+                };
+            });
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -24,7 +49,7 @@ namespace Academy_2025
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

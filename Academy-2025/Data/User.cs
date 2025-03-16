@@ -8,15 +8,20 @@ namespace Academy_2025.Data
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string? FirstName { get; set; }
+        
+        //public string? FirstName { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string? LastName { get; set; }
+        
+        //public string? LastName { get; set; }
 
-        [Required]
+        public string? Name { get; set; }
+
         public int Age { get; set; }
+
+        public required string Email { get; set; }
+        public required string Password { get; set; }
+
+
+        public ICollection<Course> Courses { get; set; } = [];
     }
 }
