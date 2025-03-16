@@ -9,7 +9,7 @@ namespace Academy_2025.DTOs
 
         [Required]
         [StringLength(50)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         //public string? FirstName { get; set; }
 
         /*[Required]
@@ -25,6 +25,9 @@ namespace Academy_2025.DTOs
 
         [Required]
         public required string Password { get; set; }
+
+        [Required]
+        public string? Role { get; set; }
 
     }
 }

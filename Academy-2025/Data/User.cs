@@ -21,6 +21,8 @@ namespace Academy_2025.Data
         public required string Email { get; set; }
         public required string Password { get; set; }
 
+        public string? Role { get; set; }
+
 
         public ICollection<Course> Courses { get; set; } = [];
     }
